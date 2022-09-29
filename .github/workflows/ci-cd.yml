@@ -6,7 +6,9 @@ name: SnapLogic CI/CD Demo
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ 'releases/**', 'main' ]
+    branches:
+      - releases/**
+      - main
   pull_request:
     branches: [ main ]
 
@@ -46,7 +48,7 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{"repo":"${{ github.repository }}","ref" : "heads/main"}'            
   promote:
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+    if: github.repository == 'main'
     runs-on: ubuntu-latest
     steps:
       # 1. Deploy to Staging environment
