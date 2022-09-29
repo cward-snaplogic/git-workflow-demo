@@ -52,8 +52,7 @@ jobs:
       # 1. Deploy to Staging environment
       - name: Migrate to Staging Project
         run: |
-          curl -s -X POST ${{ env.URL }}/api/1/rest/public/project/migrate/${{ env.ORG }}/${{ env.PROJECT_SPACE }}/${{ github.job }}_${{ github.GITHUB_RUN_ID
-          }}	 \
+          curl -s -X POST ${{ env.URL }}/api/1/rest/public/project/migrate/${{ env.ORG }}/${{ env.PROJECT_SPACE }}/${{ github.job }}_${{ github.GITHUB_RUN_ID}}	 \
             -u ${{ secrets.SL_USER }}:${{ secrets.SL_PASSWORD_TEST }} \
             -H "Content-Type: application/json" \
             -d '{"dest_path":"/${{ env.ORG }}/${{ env.PROJECT_SPACE_PROMOTE }}/${{ env.PROJECT_PROMOTE }}","asset_types":["File","Job","Account","Pipeline"],"async_mode":"true","duplicate_check":"false"}'
