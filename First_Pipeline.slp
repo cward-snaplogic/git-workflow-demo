@@ -26,7 +26,7 @@
         "input": {
             "11111111-1111-1111-1111-000000000000_input0": {
                 "label": {
-                    "value": "Mapper - input0"
+                    "value": "Mapper 1 - input0"
                 },
                 "view_type": {
                     "value": "document"
@@ -36,7 +36,7 @@
         "output": {
             "11111111-1111-1111-1111-000000000000_output0": {
                 "label": {
-                    "value": "Mapper - output0"
+                    "value": "Mapper 1 - output0"
                 },
                 "view_type": {
                     "value": "document"
@@ -64,8 +64,8 @@
         "detail_map": {
             "11111111-1111-1111-1111-000000000000": {
                 "error": {},
-                "grid_x_int": 4,
-                "grid_y_int": 2,
+                "grid_x_int": 2,
+                "grid_y_int": 1,
                 "index": null,
                 "input": {},
                 "output": {},
@@ -100,8 +100,9 @@
                 },
                 "info": {
                     "label": {
-                        "value": "Mapper"
-                    }
+                        "value": "Mapper 1"
+                    },
+                    "notes": {}
                 },
                 "input": {
                     "input0": {
@@ -127,6 +128,9 @@
                     "execution_mode": {
                         "value": "Validate & Execute"
                     },
+                    "nullSafeAccess": {
+                        "value": false
+                    },
                     "passThrough": {
                         "value": false
                     },
@@ -139,7 +143,11 @@
                                 "value": [
                                     {
                                         "expression": {
-                                            "expression": true
+                                            "expression": true,
+                                            "value": "1"
+                                        },
+                                        "targetPath": {
+                                            "value": "$result"
                                         }
                                     }
                                 ]
