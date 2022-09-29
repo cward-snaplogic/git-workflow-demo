@@ -21,6 +21,7 @@ jobs:
       ORG: SnapLogic-PS-Team
       PROJECT_SPACE: CICD_02_Test
       PROJECT_SPACE_PROMOTE: CICD_03_Staging
+      PROJECT_PROMOTE: github_workflow_demo
     steps:
 
       # 2. Create test project space
@@ -48,7 +49,7 @@ jobs:
       # 5. If successful, deploy to Staging environment
       - name: Migrate to Staging Project
         run: |
-          curl -s -X POST ${{ env.URL }}/api/1/rest/public/project/migrate/${{ env.ORG }}/${{ env.PROJECT_SPACE }}/${{ github.job }}_${{ github.run_number }}	 \
+          curl -s -X POST ${{ env.URL }}/api/1/rest/public/project/migrate/${{ env.ORG }}/${{ env.PROJECT_SPACE }}/${{ env.PROJECT_PROMOTE }}	 \
             -u ${{ secrets.SL_USER }}:${{ secrets.SL_PASSWORD_TEST }} \
             -H "Content-Type: application/json" \
             -d '{"dest_path":"/${{ env.ORG }}/${{ env.PROJECT_SPACE_PROMOTE }}/${{ github.job }}_${{ github.run_number }}","asset_types":["File","Job","Account","Pipeline"],"async_mode":"true","duplicate_check":"false"}'
@@ -58,7 +59,7 @@ jobs:
       # 6. Update permissions in Staging
       - name: Update Permissions on Staging Project
         run: |
-          curl -s -X POST ${{ env.URL }}/api/1/rest/public/assetapi/acl/${{ env.ORG }}/${{ env.PROJECT_SPACE_PROMOTE }}/${{ github.job }}_${{ github.run_number }}	 \
+          curl -s -X POST ${{ env.URL }}/api/1/rest/public/assetapi/acl/${{ env.ORG }}/${{ env.PROJECT_SPACE_PROMOTE }}/${{ env.PROJECT_PROMOTE }} \
             -u ${{ secrets.SL_USER }}:${{ secrets.SL_PASSWORD_TEST }} \
             -H "Content-Type: application/json" \
-            -d '{"grant_type":"GROUP", "grantee":"admins", "granter":"mmays@snaplogic.com", "permission_list":["W","X"], "inherit":true}'
+            -d '{"grant_type":"GROUP", "grantee":"admins", "granter":"cward@snaplogic.com", "permission_list":["W","X"], "inherit":true}'
