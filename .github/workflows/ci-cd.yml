@@ -15,6 +15,7 @@ on:
   
 jobs:
   build:
+    if: github.repository == 'releases/**'
     runs-on: ubuntu-latest
     env:
       URL: https://elastic.snaplogic.com
@@ -45,6 +46,7 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{"repo":"${{ github.repository }}","ref" : "heads/main"}'
   promote:
+    if: github.repository == 'main'
     runs-on: ubuntu-latest
     steps:
       # 1. Deploy to Staging environment
