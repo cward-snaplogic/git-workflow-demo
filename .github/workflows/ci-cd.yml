@@ -6,7 +6,7 @@ name: SnapLogic CI/CD Demo
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ 'releases/release-1' ]
+    branches: [ 'releases/**' ]
   pull_request:
     branches: [ main ]
 
@@ -15,7 +15,7 @@ on:
   
 jobs:
   build:
-    if: github.repository == 'releases/**'
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     env:
       URL: https://elastic.snaplogic.com
@@ -65,4 +65,4 @@ jobs:
           curl -s -X POST ${{ env.URL }}/api/1/rest/public/assetapi/acl/${{ env.ORG }}/${{ env.PROJECT_SPACE_PROMOTE }}/${{ env.PROJECT_PROMOTE }} \
             -u ${{ secrets.SL_USER }}:${{ secrets.SL_PASSWORD_TEST }} \
             -H "Content-Type: application/json" \
-            -d '{"grant_type":"GROUP", "grantee":"admins", "granter":"cward@snaplogic.com", "permission_list":["W","X"], "inherit":true}'               
+            -d '{"grant_type":"GROUP", "grantee":"admins", "granter":"cward@snaplogic.com", "permission_list":["W","X"], "inherit":true}'  
