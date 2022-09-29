@@ -6,7 +6,7 @@ name: SnapLogic CI/CD Demo
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches: [ 'releases/**' ]
   pull_request:
     branches: [ main ]
 
@@ -23,7 +23,6 @@ jobs:
       PROJECT_SPACE_PROMOTE: CICD_03_Staging
       PROJECT_PROMOTE: github_workflow_demo
     steps:
-
       # 1. Create test project space
       - name: Create Test Project Space
         run: |
@@ -44,4 +43,24 @@ jobs:
           curl -s -X POST ${{ env.URL }}/api/1/rest/public/project/checkout/${{ env.ORG }}/${{ env.PROJECT_SPACE }}/${{ github.job }}_${{ github.run_number }} \
             -u ${{ secrets.SL_USER }}:${{ secrets.SL_PASSWORD_TEST }} \
             -H "Content-Type: application/json" \
-            -d '{"repo":"${{ github.repository }}","ref" : "heads/main"}'     
+            -d '{"repo":"${{ github.repository }}","ref" : "heads/main"}'
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Deploy to Staging environment
+      - name: Migrate to Staging Project
+        run: |
+          curl -s -X POST ${{ env.URL }}/api/1/rest/public/project/migrate/${{ env.ORG }}/${{ env.PROJECT_SPACE }}/${{ github.job }}_${{ github.run_number }}	 \
+            -u ${{ secrets.SL_USER }}:${{ secrets.SL_PASSWORD_TEST }} \
+            -H "Content-Type: application/json" \
+            -d '{"dest_path":"/${{ env.ORG }}/${{ env.PROJECT_SPACE_PROMOTE }}/${{ env.PROJECT_PROMOTE }}","asset_types":["File","Job","Account","Pipeline"],"async_mode":"true","duplicate_check":"false"}'
+      - name: Sleep for 5 seconds
+        run: sleep 5s
+        shell: bash
+      # 2. Update permissions in Staging
+      - name: Update Permissions on Staging Project
+        run: |
+          curl -s -X POST ${{ env.URL }}/api/1/rest/public/assetapi/acl/${{ env.ORG }}/${{ env.PROJECT_SPACE_PROMOTE }}/${{ env.PROJECT_PROMOTE }} \
+            -u ${{ secrets.SL_USER }}:${{ secrets.SL_PASSWORD_TEST }} \
+            -H "Content-Type: application/json" \
+            -d '{"grant_type":"GROUP", "grantee":"admins", "granter":"cward@snaplogic.com", "permission_list":["W","X"], "inherit":true}'               
