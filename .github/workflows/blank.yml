@@ -19,8 +19,8 @@ jobs:
     env:
       URL: https://elastic.snaplogic.com
       ORG: SnapLogic-PS-Team
-      PROJECT_SPACE: CICD_01_Dev
-      PROJECT_SPACE_PROMOTE: CICD_02_Test
+      PROJECT_SPACE: CICD_02_Test
+      PROJECT_SPACE_PROMOTE: CICD_03_Staging
     steps:
 
       # 2. Create test project space
