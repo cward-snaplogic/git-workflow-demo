@@ -50,6 +50,12 @@ jobs:
   promote:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    env:
+      URL: https://elastic.snaplogic.com
+      ORG: SnapLogic-PS-Team
+      PROJECT_SPACE: CICD_02_Test
+      PROJECT_SPACE_PROMOTE: CICD_03_Staging
+      PROJECT_PROMOTE: github_workflow_demo
     steps:
       # 1. Deploy to Staging environment
       - name: Migrate to Staging Project
