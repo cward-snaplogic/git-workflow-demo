@@ -1,0 +1,51 @@
+{
+    "class_id": "com-snaplogic-snaps-oauth2-rest-restoauth2account",
+    "class_version": 1,
+    "migration_metadata": {
+        "source_org": "SnapLogic-PS-Team"
+    },
+    "property_map": {
+        "info": {
+            "label": {
+                "value": "REST Account"
+            },
+            "notes": {
+                "value": null
+            }
+        },
+        "settings": {
+            "auth_endpoint": {
+                "value": "https://test"
+            },
+            "auth_endpoint_config": {
+                "value": []
+            },
+            "autoRefreshToken": {
+                "value": false
+            },
+            "client_id": {
+                "value": "cward@snaplogic.com"
+            },
+            "client_secret": {
+                "fp": "9207eb494545fc4f2dc7c4c82154a174471ac326432005090fb071e53e4bdba6",
+                "key": "account-cloud-managed-5a7406fabc9ffa1d0bfa7781-2018-02-02T06:36:54-365964+00:00",
+                "sym_iv": "e0+tF7ONwiKwmksa0ZmzEw==",
+                "sym_key": "c98xGik0Y6+0RUPiEy8Me5rCSsKldmBl7Q6utOXK1Hmuv1NvkwZbyY5SIg8nwCn9p+hfhjyrzjQozHGMPEst4LAbXuekPiKlSBsd+NqKcQd8+8IzmKes+qNwXARO0fzqzI0JSgu0vGs35Yh8v1JLBVKYSPp3bHqt8v+TJDoimqVEP8cwhxB35T9baQBN/M5D/enfi6VQeNTsMc1fBn/mk8QX8Bi8M4rsv0dY3RQ2fjvjB6Gs8cTxuTNV1olXHknLQoxT7gKYioLK1ptzvc2dnyrUgnNaX1KFFs2AHZtyJ94IhjWX33WP8vIaVTyOPKPiRd8LshMA6n+ifblOqWa4Gg==",
+                "value": "+oeqKeqjaFSRFTADvJq41lIoMD/mkptcjaepeI1oxp8="
+            },
+            "grant_type": {
+                "value": "authorization_code"
+            },
+            "headerAuth": {
+                "value": false
+            },
+            "token_endpoint": {
+                "value": "https://test"
+            },
+            "token_endpoint_config": {
+                "value": []
+            }
+        },
+        "view_serial": 100
+    }
+}
