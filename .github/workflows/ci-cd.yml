@@ -4,7 +4,6 @@ name: SnapLogic CI/CD Demo
 env:
   URL: https://elastic.snaplogic.com
   ORG: SnapLogic-PS-Team
-  PROJECT_SPACE: CICD_02_Test
   PROJECT_SPACE_PROMOTE: CICD_03_Prod
   PROJECT_PROMOTE: github_workflow_demo
       
