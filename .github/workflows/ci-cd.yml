@@ -36,14 +36,14 @@ jobs:
       # 2. Create prod project
       - name: Create Prod Project
         run: |
-          curl -s -X POST ${{ env.URL }}/api/1/rest/public/assetapi/project/${{ env.ORG }}/${{ env.PROJECT_SPACE_PROMOTE }}/${{ PROJECT_PROMOTE }} \
+          curl -s -X POST ${{ env.URL }}/api/1/rest/public/assetapi/project/${{ env.ORG }}/${{ env.PROJECT_SPACE_PROMOTE }}/${{ env.PROJECT_PROMOTE }} \
             -u ${{ secrets.SL_USER }}:${{ secrets.SL_PASSWORD_TEST }} \
             -H "Content-Type: application/json" \
             -d '{"permissions":[{"perms": ["R","W","X"],"subject_type": "USER","inherit": true,"subject": "${{ secrets.SL_USER }}"}]}'
       # 3. Clone to prod project
       - name: Clone to Prod Project
         run: |
-          curl -s -X POST ${{ env.URL }}/api/1/rest/public/project/checkout/${{ env.ORG }}/${{ env.PROJECT_SPACE_PROMOTE }}/${{ PROJECT_PROMOTE }} \
+          curl -s -X POST ${{ env.URL }}/api/1/rest/public/project/checkout/${{ env.ORG }}/${{ env.PROJECT_SPACE_PROMOTE }}/${{ env.PROJECT_PROMOTE }} \
             -u ${{ secrets.SL_USER }}:${{ secrets.SL_PASSWORD_TEST }} \
             -H "Content-Type: application/json" \
             -d '{"repo":"${{ github.repository }}","ref" : "heads/main"}'
