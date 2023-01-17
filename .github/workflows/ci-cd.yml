@@ -5,7 +5,7 @@ env:
   URL: https://elastic.snaplogic.com
   ORG: SnapLogic-PS-Team
   PROJECT_SPACE: CICD_02_Test
-  PROJECT_SPACE_PROMOTE: CICD_03_Staging
+  PROJECT_SPACE_PROMOTE: CICD_03_Prod
   PROJECT_PROMOTE: github_workflow_demo
       
 # Controls when the workflow will run
@@ -22,49 +22,28 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      # 1. Create test project space
-      - name: Create Test Project Space
-        run: |
-          curl -s -X POST ${{ env.URL }}/api/1/rest/public/assetapi/project/${{ env.ORG }}/${{ env.PROJECT_SPACE }}	 \
-            -u ${{ secrets.SL_USER }}:${{ secrets.SL_PASSWORD_TEST }} \
-            -H "Content-Type: application/json" \
-            -d '{"permissions":[{"perms": ["R","W","X"],"subject_type": "USER","inherit": true,"subject": "${{ secrets.SL_USER }}"}]}'
-      # 2. Create test project
-      - name: Create Test Project
-        run: |
-          curl -s -X POST ${{ env.URL }}/api/1/rest/public/assetapi/project/${{ env.ORG }}/${{ env.PROJECT_SPACE }}/${{ github.job }}_${{ github.run_number }}	 \
-            -u ${{ secrets.SL_USER }}:${{ secrets.SL_PASSWORD_TEST }} \
-            -H "Content-Type: application/json" \
-            -d '{"permissions":[{"perms": ["R","W","X"],"subject_type": "USER","inherit": true,"subject": "${{ secrets.SL_USER }}"}]}'
-      # 3. Clone to test project
-      - name: Clone to Test Project
-        run: |
-          curl -s -X POST ${{ env.URL }}/api/1/rest/public/project/checkout/${{ env.ORG }}/${{ env.PROJECT_SPACE }}/${{ github.job }}_${{ github.run_number }} \
-            -u ${{ secrets.SL_USER }}:${{ secrets.SL_PASSWORD_TEST }} \
-            -H "Content-Type: application/json" \
-            -d '{"repo":"${{ github.repository }}","ref" : "heads/main"}'            
   promote:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      # 1. Deploy to Staging environment
-      - name: Migrate to Staging Project
+      # 1. Create prod project space
+      - name: Create Prod Project Space
         run: |
-          curl -s -X POST ${{ env.URL }}/api/1/rest/public/project/migrate/${{ env.ORG }}/${{ env.PROJECT_SPACE }}/${{ github.job }}_${{ github.run_number }}	 \
+          curl -s -X POST ${{ env.URL }}/api/1/rest/public/assetapi/project/${{ env.ORG }}/${{ env.PROJECT_SPACE_PROMOTE }}	 \
             -u ${{ secrets.SL_USER }}:${{ secrets.SL_PASSWORD_TEST }} \
             -H "Content-Type: application/json" \
-            -d '{"dest_path":"/${{ env.ORG }}/${{ env.PROJECT_SPACE_PROMOTE }}/${{ env.PROJECT_PROMOTE }}","asset_types":["File","Job","Account","Pipeline"],"async_mode":"true","duplicate_check":"false"}'
-      - name: Sleep for 5 seconds
-        run: sleep 5s
-        shell: bash
-      # 2. Update permissions in Staging
-      - name: Update Permissions on Staging Project
+            -d '{"permissions":[{"perms": ["R","W","X"],"subject_type": "USER","inherit": true,"subject": "${{ secrets.SL_USER }}"}]}'
+      # 2. Create prod project
+      - name: Create Prod Project
         run: |
-          curl -s -X POST ${{ env.URL }}/api/1/rest/public/assetapi/acl/${{ env.ORG }}/${{ env.PROJECT_SPACE_PROMOTE }}/${{ env.PROJECT_PROMOTE }} \
+          curl -s -X POST ${{ env.URL }}/api/1/rest/public/assetapi/project/${{ env.ORG }}/${{ env.PROJECT_SPACE_PROMOTE }}/${{ PROJECT_PROMOTE }} \
             -u ${{ secrets.SL_USER }}:${{ secrets.SL_PASSWORD_TEST }} \
             -H "Content-Type: application/json" \
-            -d '{"grant_type":"GROUP", "grantee":"admins", "granter":"cward@snaplogic.com", "permission_list":["W","X"], "inherit":true}'  
+            -d '{"permissions":[{"perms": ["R","W","X"],"subject_type": "USER","inherit": true,"subject": "${{ secrets.SL_USER }}"}]}'
+      # 3. Clone to prod project
+      - name: Clone to Prod Project
+        run: |
+          curl -s -X POST ${{ env.URL }}/api/1/rest/public/project/checkout/${{ env.ORG }}/${{ env.PROJECT_SPACE_PROMOTE }}/${{ PROJECT_PROMOTE }} \
+            -u ${{ secrets.SL_USER }}:${{ secrets.SL_PASSWORD_TEST }} \
+            -H "Content-Type: application/json" \
+            -d '{"repo":"${{ github.repository }}","ref" : "heads/main"}'
