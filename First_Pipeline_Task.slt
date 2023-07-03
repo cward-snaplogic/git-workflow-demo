@@ -6,7 +6,6 @@
         "enabled": true,
         "include_external_urls": true,
         "job_type": "standard",
-        "llfeed_token": "JkzIZNHJx5JWweJjxe8s0IaIevZR9Gte",
         "notification": {
             "slack_recipients": [
                 {
