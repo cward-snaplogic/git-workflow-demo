@@ -16,7 +16,7 @@
         },
         "pipeline_parameters": {},
         "pipeline_path": "First_Pipeline",
-        "snaplex_path": "Ultra-Cloud"
+        "snaplex_path": null
     },
     "schedule": {},
     "trigger": {},
